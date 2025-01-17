@@ -1,0 +1,10 @@
+[package]
+name = "fancy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.95"
+image = "0.25.5"
+rand = "0.8.5"
+rand_chacha = "0.3.1"
