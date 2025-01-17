@@ -1,6 +1,8 @@
+use image::Rgba;
+
 use crate::nft_trait::Trait;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Foreground {
     Ramp,
     Wall,
@@ -21,17 +23,42 @@ impl Trait for Foreground {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum ForegroundColor {
-    Gray,
+    Water,
+    Lava,
+    Sand,
+    Wood,
+}
+
+impl ForegroundColor {
+    pub fn rgba(&self) -> Rgba<u8> {
+        let [r, g, b] = match self {
+            Self::Water => [100, 100, 240],
+            Self::Lava => [255, 110, 20],
+            Self::Sand => [255, 200, 128],
+            Self::Wood => [161, 102, 47],
+        };
+        Rgba([r, g, b, 255])
+    }
 }
 
 impl Trait for ForegroundColor {
     fn choices() -> Vec<Self> {
-        vec![ForegroundColor::Gray]
+        vec![
+            ForegroundColor::Water,
+            ForegroundColor::Lava,
+            ForegroundColor::Sand,
+            ForegroundColor::Wood,
+        ]
     }
 
     fn probability(&self) -> usize {
-        1
+        match self {
+            Self::Water => 5,
+            Self::Lava => 1,
+            Self::Sand => 4,
+            Self::Wood => 3,
+        }
     }
 }

@@ -1,108 +1,50 @@
 mod layers;
 mod nft_trait;
 
+use std::collections::HashSet;
+
 use anyhow::Result;
 use image::{imageops::FilterType, ColorType, DynamicImage, GenericImage, GenericImageView, Rgba};
-use rand::{seq::SliceRandom, SeedableRng};
+use layers::{Animal, AnimalColor, Background, BackgroundColor, Foreground, ForegroundColor};
+use nft_trait::Trait;
+use rand::SeedableRng;
 use rand_chacha::ChaCha20Rng;
 
 fn main() -> Result<()> {
-    let animals = [Animal::Cat, Animal::Fox, Animal::Rabbit];
-    let animal_colors = [
-        [102, 242, 139],
-        [228, 242, 102],
-        [245, 172, 120],
-        [120, 245, 201],
-        [120, 185, 245],
-        [245, 120, 245],
-        [180, 180, 180],
-        [120, 120, 120],
-        [176, 109, 62],
-        [33, 150, 90],
-        [156, 50, 191],
-        [58, 153, 222],
-        [222, 58, 77],
-        [95, 186, 56],
-    ];
-
-    let backgrounds = [
-        Background::Plain,
-        Background::Plain,
-        Background::Plain,
-        Background::Vertical,
-        Background::Vertical,
-        Background::Horizontal,
-        Background::Horizontal,
-        Background::Radial,
-    ];
-    let background_colors = [
-        ([74, 237, 237], [204, 237, 74]),
-        ([77, 255, 188], [250, 227, 77]),
-        ([172, 255, 161], [255, 200, 200]),
-    ];
-
-    let foregrounds = [Foreground::Ramp, Foreground::Wall, Foreground::Wave];
-    let foreground_colors = [
-        [74, 114, 237],
-        [74, 114, 237],
-        [74, 114, 237],
-        [237, 74, 158],
-        [237, 74, 158],
-        [237, 142, 74],
-        [237, 252, 98],
-    ];
-
-    let mut images = Vec::new();
-
-    for background in backgrounds {
-        for (primary_background_color, secondary_background_color) in background_colors {
-            for foreground in foregrounds {
-                for foreground_color in foreground_colors {
-                    for animal in animals {
-                        for animal_color in animal_colors {
-                            let mut foreground = custom_foreground(
-                                foreground,
-                                Rgba([
-                                    foreground_color[0],
-                                    foreground_color[1],
-                                    foreground_color[2],
-                                    255,
-                                ]),
-                            )?;
-                            let animal = custom_animal(
-                                animal,
-                                Rgba([animal_color[0], animal_color[1], animal_color[2], 255]),
-                            )?;
-
-                            copy_non_transparent_pixels(&mut foreground, &animal);
-
-                            let mut image = custom_background(
-                                background,
-                                Rgba([
-                                    primary_background_color[0],
-                                    primary_background_color[1],
-                                    primary_background_color[2],
-                                    255,
-                                ]),
-                                Rgba([
-                                    secondary_background_color[0],
-                                    secondary_background_color[1],
-                                    secondary_background_color[2],
-                                    255,
-                                ]),
-                            )?;
-                            copy_non_transparent_pixels(&mut image, &foreground);
-
-                            images.push(image);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     let mut rng = ChaCha20Rng::seed_from_u64(1337);
-    images.shuffle(&mut rng);
+    let mut images = Vec::new();
+    let mut traits = HashSet::new();
+
+    while images.len() < 1000 {
+        let foreground = Foreground::random(&mut rng);
+        let foreground_color = ForegroundColor::random(&mut rng);
+        let animal = Animal::random(&mut rng);
+        let animal_color = AnimalColor::random(&mut rng);
+        let background = Background::random(&mut rng);
+        let background_color = BackgroundColor::random(&mut rng);
+
+        if !traits.insert((
+            foreground,
+            foreground_color,
+            animal,
+            animal_color,
+            background,
+            background_color,
+        )) {
+            continue;
+        }
+
+        let mut foreground = custom_foreground(foreground, foreground_color.rgba())?;
+        let animal = custom_animal(animal, animal_color.rgba())?;
+
+        copy_non_transparent_pixels(&mut foreground, &animal);
+
+        let (primary_color, secondary_color) = background_color.rgba();
+        let mut image = custom_background(background, primary_color, secondary_color)?;
+        copy_non_transparent_pixels(&mut image, &foreground);
+
+        images.push(image);
+    }
 
     let mut collage = DynamicImage::new(32 * 32, 32 * 32, ColorType::Rgba8);
 
@@ -132,6 +74,7 @@ fn custom_animal(animal: Animal, color: Rgba<u8>) -> Result<DynamicImage> {
         Animal::Cat => "Animals/Cat.png",
         Animal::Fox => "Animals/Fox.png",
         Animal::Rabbit => "Animals/Rabbit.png",
+        Animal::Budgie => "Animals/Budgie.png",
     })?;
 
     for rgba in image.as_mut_rgba8().unwrap().pixels_mut() {
@@ -154,6 +97,7 @@ fn custom_background(
         Background::Vertical => "Backgrounds/Vertical.png",
         Background::Horizontal => "Backgrounds/Horizontal.png",
         Background::Radial => "Backgrounds/Radial.png",
+        Background::Squares => "Backgrounds/Squares.png",
     })?;
 
     for rgba in image.as_mut_rgba8().unwrap().pixels_mut() {
