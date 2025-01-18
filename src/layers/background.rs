@@ -9,16 +9,18 @@ pub enum Background {
     Horizontal,
     Radial,
     Squares,
+    Frame,
 }
 
 impl Trait for Background {
     fn choices() -> Vec<Self> {
         vec![
-            Background::Plain,
-            Background::Vertical,
-            Background::Horizontal,
-            Background::Radial,
-            Background::Squares,
+            Self::Plain,
+            Self::Vertical,
+            Self::Horizontal,
+            Self::Radial,
+            Self::Squares,
+            Self::Frame,
         ]
     }
 
@@ -29,6 +31,7 @@ impl Trait for Background {
             Self::Horizontal => 2,
             Self::Radial => 1,
             Self::Squares => 1,
+            Self::Frame => 2,
         }
     }
 }
@@ -62,13 +65,13 @@ impl BackgroundColor {
 impl Trait for BackgroundColor {
     fn choices() -> Vec<Self> {
         vec![
-            BackgroundColor::Sky,
-            BackgroundColor::Sunlight,
-            BackgroundColor::Sunset,
-            BackgroundColor::Night,
-            BackgroundColor::Cloudy,
-            BackgroundColor::Storm,
-            BackgroundColor::Overcast,
+            Self::Sky,
+            Self::Sunlight,
+            Self::Sunset,
+            Self::Night,
+            Self::Cloudy,
+            Self::Storm,
+            Self::Overcast,
         ]
     }
 

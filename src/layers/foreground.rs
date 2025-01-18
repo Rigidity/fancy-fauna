@@ -11,7 +11,7 @@ pub enum Foreground {
 
 impl Trait for Foreground {
     fn choices() -> Vec<Self> {
-        vec![Foreground::Ramp, Foreground::Wall, Foreground::Wave]
+        vec![Self::Ramp, Self::Wall, Self::Wave]
     }
 
     fn probability(&self) -> usize {
@@ -45,12 +45,7 @@ impl ForegroundColor {
 
 impl Trait for ForegroundColor {
     fn choices() -> Vec<Self> {
-        vec![
-            ForegroundColor::Water,
-            ForegroundColor::Lava,
-            ForegroundColor::Sand,
-            ForegroundColor::Wood,
-        ]
+        vec![Self::Water, Self::Lava, Self::Sand, Self::Wood]
     }
 
     fn probability(&self) -> usize {

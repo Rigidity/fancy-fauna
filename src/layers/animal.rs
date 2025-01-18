@@ -5,6 +5,7 @@ use crate::nft_trait::Trait;
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum Animal {
     Cat,
+    Dog,
     Fox,
     Rabbit,
     Budgie,
@@ -12,12 +13,13 @@ pub enum Animal {
 
 impl Trait for Animal {
     fn choices() -> Vec<Self> {
-        vec![Animal::Cat, Animal::Fox, Animal::Rabbit, Animal::Budgie]
+        vec![Self::Cat, Self::Dog, Self::Fox, Self::Rabbit, Self::Budgie]
     }
 
     fn probability(&self) -> usize {
         match self {
             Self::Cat => 4,
+            Self::Dog => 4,
             Self::Fox => 4,
             Self::Rabbit => 3,
             Self::Budgie => 2,
@@ -31,6 +33,7 @@ pub enum AnimalColor {
     Green,
     Blue,
     Purple,
+    Yellow,
     Gray,
     Orange,
     Alpha,
@@ -43,6 +46,7 @@ impl AnimalColor {
             Self::Green => [140, 220, 140],
             Self::Blue => [145, 145, 255],
             Self::Purple => [180, 80, 230],
+            Self::Yellow => [240, 240, 30],
             Self::Gray => [170, 170, 170],
             Self::Orange => [255, 165, 0],
             Self::Alpha => return Rgba([0, 0, 0, 0]),
@@ -54,13 +58,14 @@ impl AnimalColor {
 impl Trait for AnimalColor {
     fn choices() -> Vec<Self> {
         vec![
-            AnimalColor::Red,
-            AnimalColor::Green,
-            AnimalColor::Blue,
-            AnimalColor::Purple,
-            AnimalColor::Gray,
-            AnimalColor::Orange,
-            AnimalColor::Alpha,
+            Self::Red,
+            Self::Green,
+            Self::Blue,
+            Self::Purple,
+            Self::Yellow,
+            Self::Gray,
+            Self::Orange,
+            Self::Alpha,
         ]
     }
 
@@ -70,7 +75,8 @@ impl Trait for AnimalColor {
             Self::Green => 10,
             Self::Blue => 10,
             Self::Purple => 3,
-            Self::Gray => 6,
+            Self::Yellow => 5,
+            Self::Gray => 4,
             Self::Orange => 3,
             Self::Alpha => 1,
         }
