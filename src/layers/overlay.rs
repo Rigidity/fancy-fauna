@@ -30,7 +30,7 @@ impl Trait for Overlay {
 
     fn probability(&self) -> usize {
         match self {
-            Self::None => 10,
+            Self::None => 20,
             Self::Halo => 6,
             Self::Sunglasses => 6,
             Self::Lasers => 2,
@@ -51,11 +51,13 @@ impl Overlay {
             (Self::Halo, Animal::Fox) => (11, 4),
             (Self::Halo, Animal::Rabbit) => (10, 3),
             (Self::Halo, Animal::Budgie) => (12, 3),
+            (Self::Halo, Animal::Duck) => (11, 4),
             (Self::Sunglasses | Self::Lasers, Animal::Cat) => (12, 8),
             (Self::Sunglasses | Self::Lasers, Animal::Dog) => (10, 9),
             (Self::Sunglasses | Self::Lasers, Animal::Fox) => (12, 11),
             (Self::Sunglasses | Self::Lasers, Animal::Rabbit) => (11, 11),
             (Self::Sunglasses | Self::Lasers, Animal::Budgie) => (16, 5),
+            (Self::Sunglasses | Self::Lasers, Animal::Duck) => (13, 7),
             (Self::Heart, _) => (5, 5),
             (Self::Sprout, _) => (20, 19),
             (Self::Rust, _) => (14, 18),
@@ -63,7 +65,8 @@ impl Overlay {
             (Self::Xch, Animal::Rabbit) => (8, 20),
             (Self::Xch, Animal::Budgie) => (11, 18),
             (Self::Xch, Animal::Dog) => (12, 8),
-            (Self::Xch, Animal::Cat) => (12, 19),
+            (Self::Xch, Animal::Cat) => (3, 10),
+            (Self::Xch, Animal::Duck) => (5, 5),
         }
     }
 }

@@ -9,11 +9,19 @@ pub enum Animal {
     Fox,
     Rabbit,
     Budgie,
+    Duck,
 }
 
 impl Trait for Animal {
     fn choices() -> Vec<Self> {
-        vec![Self::Cat, Self::Dog, Self::Fox, Self::Rabbit, Self::Budgie]
+        vec![
+            Self::Cat,
+            Self::Dog,
+            Self::Fox,
+            Self::Rabbit,
+            Self::Budgie,
+            Self::Duck,
+        ]
     }
 
     fn probability(&self) -> usize {
@@ -23,6 +31,7 @@ impl Trait for Animal {
             Self::Fox => 4,
             Self::Rabbit => 3,
             Self::Budgie => 2,
+            Self::Duck => 2,
         }
     }
 }

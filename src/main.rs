@@ -178,6 +178,7 @@ fn custom_animal(animal: Animal, color: Rgba<u8>) -> Result<DynamicImage> {
         Animal::Fox => "Animals/Fox.png",
         Animal::Rabbit => "Animals/Rabbit.png",
         Animal::Budgie => "Animals/Budgie.png",
+        Animal::Duck => "Animals/Duck.png",
     })?;
 
     for rgba in image.as_mut_rgba8().unwrap().pixels_mut() {
