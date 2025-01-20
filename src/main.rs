@@ -152,7 +152,7 @@ fn main() -> Result<()> {
     );
 
     let mut collage = DynamicImage::new(32 * 32, 32 * 32, ColorType::Rgba8);
-    let mut banner = DynamicImage::new(32 * 4 * 8, 32 * 4 * 4, ColorType::Rgba8);
+    let mut banner = DynamicImage::new(32 * 8 * 8, 32 * 8 * 4, ColorType::Rgba8);
 
     let mut x = 0;
     let mut y = 0;
@@ -266,9 +266,9 @@ fn main() -> Result<()> {
 
         if banner_y < 4 {
             banner.copy_from(
-                &image.resize(32 * 4, 32 * 4, FilterType::Nearest),
-                banner_x * 32 * 4,
-                banner_y * 32 * 4,
+                &image.resize(32 * 8, 32 * 8, FilterType::Nearest),
+                banner_x * 32 * 8,
+                banner_y * 32 * 8,
             )?;
             banner_x += 1;
             if banner_x == 8 {
