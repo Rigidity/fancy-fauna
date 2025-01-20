@@ -1,4 +1,8 @@
 /target
 images/
+metadata/
 collage.png
 *.DS_Store
+image_hashes.txt
+metadata_hashes.txt
+banner.png
